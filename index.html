@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Kasir Cemerlang</title>
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container">
+  <h1> 🛒Kasir Cemerlang</h1>
+  
+  <!-- menu grid 2 kolom -->
+  <div class="menu-grid"> 
+  <button class="menu-btn" onclick="tambahKeKeranjang('Ayam Geprek', 12000)">🍗 Ayam Geprek (12rb)</button>
+    <button class="menu-btn" onclick="tambahKeKeranjang('Es Teh', 3000)"> 🧋Es Teh (3rb)</button>
+      <button class="menu-btn"onclick="tambahKeKeranjang('Mie',8000)">🍜Mie (8rb)</button>
+      <button class="menu-btn"onclick="tambahKeKeranjang('Gorengan', 2000)">🥟Gorengan (2rb)</button>
+  </div>
+  
+  <!-- Ringkasan total dan aksi bayar/reset -->
+  <div class="summary-box">
+    <h3>Total Tagihan</h3>
+    <div id="total-harga" class="total-teks">Rp. 0</div>
+    <div class="action-btns">
+      <button id="btn-bayar" class="btn-main" disabled onclick="buatTransaksiQR()"> Buat QR</button>
+      <button id="btn-reset" class="btn-reset" onclick="resetKeranjang()">Reset</button>
+      
+    </div>
+  </div>
+  
+  <!--area tampil QR code -->
+  <div id="qr-section" class="hidden">
+    <h3>ID: <span id="tx-id-display"></span></h3>
+    <canvas id="qr-canvas"></canvas>
+    <div id="status-box" class="status-box status-pending">
+      status: <strong id="status-teks">menunggu scan pembayaran</strong>
+      
+    </div>
+  </div>
+</div>
+  <script  type="module"src="main.js"></script>
+</body>
+</html>
