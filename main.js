@@ -48,7 +48,7 @@ window.resetKeranjang = function(){
     totalHarga = 0
     document.getElementById('total-harga').innerText = 'Rp.0'
 document.getElementById('btn-bayar').disabled = true
-document.getElementByI('qr-section').classList.add('hidden')
+document.getElementById('qr-section').classList.add('hidden')
 }
 
 //fungsi membuat ID transaksi dan Qr code
