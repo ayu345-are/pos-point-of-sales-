@@ -48,7 +48,7 @@ let suaraDiaktifkan = false
 
 
 // ==========================================
-// 5. AKTIFKAN IZIN SUARA BROWSER
+// 5. AKTIFKAN SUARA BROWSER
 // ==========================================
 
 function aktifkanSuara() {
@@ -72,7 +72,7 @@ function suaraKasir(teks) {
   }
 
   if (!suaraDiaktifkan) {
-    console.log("Suara belum diaktifkan melalui interaksi pengguna")
+    console.log("Suara belum diaktifkan")
     return
   }
 
@@ -82,6 +82,7 @@ function suaraKasir(teks) {
 
   const daftarSuara = window.speechSynthesis.getVoices()
 
+  // Mencari suara bahasa Indonesia
   const suaraIndonesia = daftarSuara.find(voice =>
     voice.lang.toLowerCase().startsWith("id")
   )
@@ -100,12 +101,12 @@ function suaraKasir(teks) {
 
 
 // ==========================================
-// 7. NOTIFIKASI SALDO MASUK
+// 7. NOTIFIKASI PEMBAYARAN BERHASIL
 // ==========================================
 
-function notifikasiPembayaran(total) {
+function notifikasiPembayaran(total, idTransaksi) {
 
-  // Hapus notifikasi lama jika ada
+  // Hapus notifikasi sebelumnya
   const lama = document.getElementById("notifikasi-kasir")
 
   if (lama) {
@@ -119,9 +120,17 @@ function notifikasiPembayaran(total) {
 
   notifikasi.innerHTML = `
     <div style="font-size:40px;">✅</div>
+
     <h3>PEMBAYARAN BERHASIL!</h3>
+
     <p>Saldo masuk:</p>
+
     <h2>Rp. ${Number(total).toLocaleString("id-ID")}</h2>
+
+    <p>ID Transaksi:</p>
+
+    <h3>${idTransaksi}</h3>
+
     <p>Status: <b>LUNAS</b></p>
   `
 
@@ -143,18 +152,25 @@ function notifikasiPembayaran(total) {
 
   document.body.appendChild(notifikasi)
 
-  // Suara hanya saat pembayaran berhasil
+  // Pisahkan huruf ID transaksi agar mudah dibaca
+  const idUntukSuara = idTransaksi
+    .split("")
+    .join(" ")
+
+  // Suara nominal dan ID transaksi
   suaraKasir(
-    "Pembayaran berhasil. Saldo masuk sebesar " +
+    "Pembayaran berhasil. " +
+    "Uang masuk sebesar " +
     Number(total).toLocaleString("id-ID") +
-    " rupiah. Terima kasih sudah berbelanja."
+    " rupiah. " +
+    "ID transaksi " +
+    idUntukSuara +
+    ". Terima kasih sudah berbelanja."
   )
 
   // Hilangkan notifikasi setelah 5 detik
   setTimeout(() => {
-
     notifikasi.remove()
-
   }, 5000)
 }
 
@@ -164,9 +180,6 @@ function notifikasiPembayaran(total) {
 // ==========================================
 
 window.tambahKeKeranjang = function(nama, harga) {
-
-  // Aktifkan izin suara tanpa mengeluarkan suara
-  aktifkanSuara()
 
   totalHarga += harga
 
@@ -191,7 +204,7 @@ window.resetKeranjang = function() {
 
   document.getElementById("qr-section").classList.add("hidden")
 
-  // Hentikan listener sebelumnya
+  // Hentikan listener transaksi
   if (unsubscribeListener) {
     unsubscribeListener()
     unsubscribeListener = null
@@ -207,6 +220,7 @@ window.resetKeranjang = function() {
 
 window.buatTransaksiQR = async function() {
 
+  // Aktifkan izin suara melalui interaksi pengguna
   aktifkanSuara()
 
   if (totalHarga === 0) return
@@ -217,16 +231,17 @@ window.buatTransaksiQR = async function() {
     unsubscribeListener = null
   }
 
-  // Buat ID transaksi
+  // Membuat ID transaksi
   trxIdSekarang =
     "TRX-" + Math.floor(1000 + Math.random() * 9000)
 
   document.getElementById("tx-id-display").innerText =
     trxIdSekarang
 
+  // Tampilkan QR section
   document.getElementById("qr-section").classList.remove("hidden")
 
-  // Atur status pembayaran
+  // Status menunggu pembayaran
   document.getElementById("status-box").className =
     "status-box status-pending"
 
@@ -235,7 +250,7 @@ window.buatTransaksiQR = async function() {
 
   document.getElementById("qr-canvas").style.opacity = 1
 
-  // Buat QR Code
+  // Membuat QR Code
   const elemenCanvas = document.getElementById("qr-canvas")
 
   try {
@@ -268,7 +283,7 @@ window.buatTransaksiQR = async function() {
     return
   }
 
-  // Pantau status pembayaran
+  // Pantau pembayaran
   listenStatusPembayaran(trxIdSekarang)
 }
 
@@ -290,7 +305,7 @@ function listenStatusPembayaran(trxId) {
 
       const dataTransaksi = docSnapshot.data()
 
-      // Periksa apakah pembayaran berhasil
+      // Periksa status pembayaran
       if (dataTransaksi.status === "terbayar") {
 
         // Ubah tampilan menjadi lunas
@@ -302,10 +317,13 @@ function listenStatusPembayaran(trxId) {
 
         document.getElementById("qr-canvas").style.opacity = "0.2"
 
-        // Tampilkan notifikasi dan suara
-        notifikasiPembayaran(dataTransaksi.total)
+        // Notifikasi nominal dan ID transaksi
+        notifikasiPembayaran(
+          dataTransaksi.total,
+          trxId
+        )
 
-        // Hentikan listener agar tidak berulang
+        // Hentikan listener agar suara tidak berulang
         if (unsubscribeListener) {
           unsubscribeListener()
           unsubscribeListener = null
