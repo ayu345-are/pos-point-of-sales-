@@ -1,4 +1,8 @@
 
+/* =====================================
+   1. PENGATURAN DASAR
+===================================== */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,95 +10,245 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: #f0f2f5;
-  height: 100dvh; /* Menggunakan Dynamic Viewport Height */
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+
+  background: #f0f2f5;
+  min-height: 100dvh;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   padding: 10px;
 }
+
+/* =====================================
+   2. CONTAINER UTAMA
+===================================== */
 
 .container {
   width: 100%;
   max-width: 380px;
-  max-height: 100dvh;
-  background: #ffffff;
+  height: 95dvh;
+  max-height: 850px;
+
+  background: white;
   padding: 12px;
-  border-radius: 12px;
+
+  border-radius: 16px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+
+  overflow: hidden;
 }
 
+/* =====================================
+   3. JUDUL
+===================================== */
+
 h1 {
-  font-size: 18px;
+  font-size: 20px;
   text-align: center;
-  margin-bottom: 8px;
   color: #1a1a1a;
+
+  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 h3 {
-  font-size: 13px;
+  font-size: 14px;
   color: #555;
   margin-bottom: 6px;
 }
 
-/* Grid Tombol Menu Ringkas */
+.container > h3 {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+/* =====================================
+   4. GRID MENU
+===================================== */
+
 .menu-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-bottom: 8px;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  /* Setiap baris mengikuti isi kartu */
+  grid-auto-rows: max-content;
+
+  align-items: start;
+  align-content: start;
+
+  gap: 12px;
+
+  flex: 1 1 0;
+  min-height: 0;
+
+  overflow-y: auto;
+
+  padding: 2px 4px 12px 2px;
+  margin-bottom: 10px;
 }
 
-.menu-btn {
-  padding: 10px 6px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background: #f8f9fa;
-  font-size: 12px;
-  font-weight: 600;
+/* Scrollbar */
+
+.menu-grid::-webkit-scrollbar {
+  width: 4px;
+}
+
+.menu-grid::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* =====================================
+   5. KARTU MENU
+===================================== */
+
+.menu-card {
+  display: flex;
+  flex-direction: column;
+
+  align-self: start;
+  height: auto;
+  min-width: 0;
+
+  background: white;
+
+  border: 1px solid #eee;
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  padding-bottom: 10px;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* FOTO MAKANAN */
+
+.menu-card img {
+  display: block;
+
+  width: 100%;
+  height: 110px;
+  min-height: 110px;
+
+  object-fit: cover;
+}
+
+/* NAMA MAKANAN */
+
+.menu-card h3 {
+  display: block;
+
+  font-size: 14px;
+  font-weight: bold;
+
   color: #333;
+
+  margin: 9px 8px 5px;
+}
+
+/* HARGA */
+
+.menu-card p {
+  display: block;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  color: #e85d04;
+
+  margin: 0 8px 9px;
+}
+
+/* TOMBOL TAMBAH */
+
+.menu-card button {
+  display: block;
+
+  width: calc(100% - 16px);
+
+  background: #28a745;
+  color: white;
+
+  border: none;
+  border-radius: 7px;
+
+  padding: 9px;
+  margin: 0 8px;
+
+  font-size: 12px;
+  font-weight: bold;
+
   cursor: pointer;
-  text-align: center;
 }
 
-.menu-btn:active {
-  background: #e2e6ea;
+.menu-card button:active {
+  background: #218838;
+  transform: scale(0.97);
 }
 
-/* Ringkasan Belanja Compact */
+/* =====================================
+   6. TOTAL TAGIHAN
+===================================== */
+
 .summary-box {
   background: #f8f9fa;
-  padding: 8px;
-  border-radius: 8px;
-  text-align: center;
-  margin-bottom: 8px;
+
+  padding: 10px;
+
+  border-radius: 10px;
   border: 1px solid #eee;
+
+  text-align: center;
+
+  margin-bottom: 8px;
+
+  flex-shrink: 0;
+}
+
+.summary-box h3 {
+  font-size: 14px;
+  margin-bottom: 6px;
 }
 
 .total-teks {
-  font-size: 20px;
+  font-size: 22px;
+
   color: #007bff;
   font-weight: bold;
-  margin: 2px 0 6px 0;
+
+  margin: 4px 0 10px;
 }
+
+/* =====================================
+   7. TOMBOL BAYAR DAN RESET
+===================================== */
 
 .action-btns {
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .btn-main {
   flex: 2;
-  padding: 10px;
+
+  padding: 11px;
+
   background: #28a745;
   color: white;
+
   border: none;
-  border-radius: 6px;
-  font-size: 13px;
+  border-radius: 7px;
+
+  font-size: 14px;
   font-weight: bold;
 }
 
@@ -104,19 +258,29 @@ h3 {
 
 .btn-reset {
   flex: 1;
-  padding: 10px;
+
+  padding: 11px;
+
   background: #dc3545;
   color: white;
+
   border: none;
-  border-radius: 6px;
-  font-size: 13px;
+  border-radius: 7px;
+
+  font-size: 14px;
 }
 
-/* Area QR Code Pas Layar */
+/* =====================================
+   8. AREA QR CODE
+===================================== */
+
 #qr-section {
   border-top: 1px dashed #ccc;
+
   padding-top: 8px;
+
   text-align: center;
+  flex-shrink: 0;
 }
 
 .hidden {
@@ -124,18 +288,26 @@ h3 {
 }
 
 #qr-canvas {
-  width: 140px !important;  /* Ukuran pas untuk HP agar tidak makan tempat */
+  width: 140px !important;
   height: 140px !important;
-  margin: 4px auto;
+
+  margin: 5px auto;
+
   display: block;
 }
 
-/* Box Status Ringkas */
+/* =====================================
+   9. STATUS PEMBAYARAN
+===================================== */
+
 .status-box {
-  padding: 6px;
+  padding: 8px;
+
   font-size: 12px;
-  border-radius: 6px;
-  margin-top: 4px;
+
+  border-radius: 7px;
+
+  margin-top: 5px;
 }
 
 .status-pending {
@@ -147,4 +319,29 @@ h3 {
   background: #d4edda;
   color: #155724;
   font-weight: bold;
+}
+
+/* =====================================
+   10. RESPONSIVE HP KECIL
+===================================== */
+
+@media (max-height: 650px) {
+
+  .container {
+    height: 98dvh;
+    padding: 8px;
+  }
+
+  .menu-card img {
+    height: 85px;
+    min-height: 85px;
+  }
+
+  h1 {
+    margin-bottom: 6px;
+  }
+
+  .summary-box {
+    padding: 7px;
+  }
 }

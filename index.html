@@ -1,48 +1,143 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Kasir Cemerlang</title>
-  
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+
 <div class="container">
-  <h1> 🛒Kasir Cemerlang</h1>
-  
-  <!-- menu grid 2 kolom -->
-  <div class="menu-grid"> 
-  <button class="menu-btn" onclick="tambahKeKeranjang('Ayam Geprek', 12000)">🍗 Ayam Geprek (12rb)</button>
-    <button class="menu-btn" onclick="tambahKeKeranjang('Es Teh', 3000)"> 🧋Es Teh (3rb)</button>
-      <button class="menu-btn"onclick="tambahKeKeranjang('Mie',8000)">🍜Mie (8rb)</button>
-      <button class="menu-btn"onclick="tambahKeKeranjang('Gorengan', 2000)">🥟Gorengan (2rb)</button>
+
+  <h1>🛒 Kasir Cemerlang</h1>
+
+  <h3>🍽️ Pilih Menu Favoritmu</h3>
+
+  <!-- MENU MAKANAN DAN MINUMAN -->
+  <div class="menu-grid">
+
+    <!-- RAMEN -->
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400" alt="Ramen">
+      <h3>🍜 Ramen</h3>
+      <p>Rp15.000</p>
+      <button onclick="tambahKeKeranjang('Ramen',15000)">+ Tambah</button>
+    </div>
+
+    <!-- ES TEH -->
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400" alt="Es Teh">
+      <h3>🧋 Es Teh</h3>
+      <p>Rp3.000</p>
+      <button onclick="tambahKeKeranjang('Es Teh',3000)">+ Tambah</button>
+    </div>
+
+    <!-- KIMBAB -->
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=400" alt="Kimbab">
+      <h3>🫔 Kimbab</h3>
+      <p>Rp10.000</p>
+      <button onclick="tambahKeKeranjang('Kimbab',10000)">+ Tambah</button>
+    </div>
+
+    <!-- SUSHI -->
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400" alt="Sushi">
+      <h3>🍣 Sushi</h3>
+      <p>Rp15.000</p>
+      <button onclick="tambahKeKeranjang('Sushi',15000)">+ Tambah</button>
+    </div>
+
+    <!-- CHICKEN KATSU -->
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400" alt="Chicken Katsu">
+      <h3>🍗 Chicken Katsu</h3>
+      <p>Rp18.000</p>
+      <button onclick="tambahKeKeranjang('Chicken Katsu',18000)">+ Tambah</button>
+    </div>
+
+    <!-- DIMSUM -->
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400" alt="Dimsum">
+      <h3>🥟 Dimsum</h3>
+      <p>Rp12.000</p>
+      <button onclick="tambahKeKeranjang('Dimsum',12000)">+ Tambah</button>
+    </div>
+
+    <!-- CORNDOG -->
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400" alt="Corndog">
+      <h3>🌭 Corndog</h3>
+      <p>Rp10.000</p>
+      <button onclick="tambahKeKeranjang('Corndog',10000)">+ Tambah</button>
+    </div>
+
+    <!-- MATCHA -->
+    <div class="menu-card">
+      <img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=400" alt="Matcha">
+      <h3>🍵 Matcha</h3>
+      <p>Rp8.000</p>
+      <button onclick="tambahKeKeranjang('Matcha',8000)">+ Tambah</button>
+    </div>
+
   </div>
-  
-  <!-- Ringkasan total dan aksi bayar/reset -->
+
+  <!-- RINGKASAN BELANJA -->
   <div class="summary-box">
+
     <h3>Total Tagihan</h3>
-    <div id="total-harga" class="total-teks">Rp. 0</div>
+
+    <div id="total-harga" class="total-teks">
+      Rp. 0
+    </div>
+
     <div class="action-btns">
-      <button id="btn-bayar" class="btn-main" disabled onclick="buatTransaksiQR()"> Buat QR</button>
-      <button id="btn-reset" class="btn-reset" onclick="resetKeranjang()">Reset</button>
-      
+
+      <button
+        id="btn-bayar"
+        class="btn-main"
+        disabled
+        onclick="buatTransaksiQR()">
+        Buat QR
+      </button>
+
+      <button
+        id="btn-reset"
+        class="btn-reset"
+        onclick="resetKeranjang()">
+        Reset
+      </button>
+
     </div>
+
   </div>
-  
-  <!--area tampil QR code -->
+
+  <!-- AREA QR CODE -->
   <div id="qr-section" class="hidden">
+
     <h3>ID: <span id="tx-id-display"></span></h3>
+
     <canvas id="qr-canvas"></canvas>
+
     <div id="status-box" class="status-box status-pending">
-      status: <strong id="status-teks">menunggu scan pembayaran</strong>
-      
+      Status:
+      <strong id="status-teks">
+        Menunggu scan pembayaran
+      </strong>
     </div>
+
   </div>
+
 </div>
-  <script  type="module"src="main.js"></script>
+
+<!-- JAVASCRIPT -->
+<script type="module" src="main.js"></script>
+
 </body>
 </html>
