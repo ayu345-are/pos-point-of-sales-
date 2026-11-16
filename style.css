@@ -1,6 +1,5 @@
-
 /* =====================================
-   1. PENGATURAN DASAR
+   1. RESET DAN WARNA UTAMA
 ===================================== */
 
 * {
@@ -9,39 +8,56 @@
   padding: 0;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, sans-serif;
+:root {
+  --hijau: #079669;
+  --hijau-tua: #056b4c;
+  --hijau-muda: #e5f8ef;
+  --orange: #ed8738;
+  --biru: #2185e8;
+  --merah: #e94359;
+  --teks: #253640;
+  --abu: #71808a;
+  --background: #edf3f5;
+}
 
-  background: #f0f2f5;
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background:
+    radial-gradient(circle at top left, #d9f5e9, transparent 35%),
+    linear-gradient(135deg, #edf4f7, #f7fafb);
+
   min-height: 100dvh;
+  padding: 10px;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  padding: 10px;
+  color: var(--teks);
 }
 
 /* =====================================
-   2. CONTAINER UTAMA
+   2. CONTAINER
 ===================================== */
 
 .container {
   width: 100%;
-  max-width: 380px;
-  height: 95dvh;
-  max-height: 850px;
+  max-width: 650px;
+  height: 96dvh;
+  max-height: 1000px;
 
-  background: white;
-  padding: 12px;
+  padding: 20px;
+  background: rgba(255,255,255,0.96);
 
-  border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.9);
+  border-radius: 30px;
+
+  box-shadow:
+    0 15px 45px rgba(31,65,75,0.09),
+    0 3px 10px rgba(31,65,75,0.04);
 
   display: flex;
   flex-direction: column;
-
   overflow: hidden;
 }
 
@@ -50,237 +66,369 @@ body {
 ===================================== */
 
 h1 {
-  font-size: 20px;
   text-align: center;
-  color: #1a1a1a;
+  font-size: 27px;
+  font-weight: 850;
+  letter-spacing: -0.8px;
+  color: #183b38;
+
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.container > h3 {
+  font-size: 19px;
+  font-weight: 800;
+  color: #34464e;
 
   margin-bottom: 12px;
   flex-shrink: 0;
 }
 
-h3 {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 6px;
+/* =====================================
+   4. KARTU SALDO
+===================================== */
+
+.saldo-box {
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(
+    120deg,
+    #056b4c 0%,
+    #079669 55%,
+    #20b181 100%
+  );
+
+  color: white;
+  padding: 23px;
+
+  border-radius: 25px;
+  margin-bottom: 22px;
+  flex-shrink: 0;
+
+  box-shadow: 0 12px 25px rgba(7,150,105,0.20);
 }
 
-.container > h3 {
-  flex-shrink: 0;
-  margin-bottom: 10px;
+.saldo-box::before {
+  content: "";
+  position: absolute;
+
+  width: 210px;
+  height: 210px;
+
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+
+  right: -75px;
+  top: -105px;
+}
+
+.saldo-box::after {
+  content: "";
+  position: absolute;
+
+  width: 130px;
+  height: 130px;
+
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+
+  right: 75px;
+  bottom: -95px;
+}
+
+.saldo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: relative;
+  z-index: 1;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.saldo-status {
+  font-size: 14px;
+  color: #d7ffeb;
+}
+
+#saldo-kasir,
+#saldo-penjual {
+  position: relative;
+  z-index: 1;
+
+  font-size: clamp(32px, 7vw, 44px);
+  font-weight: 900;
+
+  color: white;
+  letter-spacing: -1.5px;
+
+  margin: 25px 0 27px;
+}
+
+.saldo-footer {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 16px;
+
+  font-size: 15px;
+}
+
+.saldo-footer strong {
+  font-size: 18px;
+  font-weight: 850;
 }
 
 /* =====================================
-   4. GRID MENU
+   5. AREA MENU
 ===================================== */
 
 .menu-grid {
   display: grid;
-
   grid-template-columns: repeat(2, minmax(0, 1fr));
 
-  /* Setiap baris mengikuti isi kartu */
-  grid-auto-rows: max-content;
-
-  align-items: start;
   align-content: start;
+  align-items: stretch;
 
-  gap: 12px;
+  gap: 16px;
 
-  flex: 1 1 0;
+  width: 100%;
+  min-width: 0;
   min-height: 0;
 
-  overflow-y: auto;
+  flex: 1 1 0;
 
-  padding: 2px 4px 12px 2px;
-  margin-bottom: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 5px 5px 18px 3px;
+  margin-bottom: 12px;
+
+  scrollbar-width: thin;
+  scrollbar-color: #b9d8cd transparent;
 }
 
-/* Scrollbar */
-
 .menu-grid::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
 }
 
 .menu-grid::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 10px;
+  background: #b9d8cd;
+  border-radius: 20px;
 }
 
 /* =====================================
-   5. KARTU MENU
+   6. KARTU MENU
 ===================================== */
 
 .menu-card {
   display: flex;
   flex-direction: column;
 
-  align-self: start;
-  height: auto;
+  width: 100%;
   min-width: 0;
+  min-height: 260px;
 
   background: white;
-
-  border: 1px solid #eee;
-  border-radius: 12px;
+  border: 1px solid #edf1f2;
+  border-radius: 19px;
 
   overflow: hidden;
+  padding-bottom: 12px;
 
-  padding-bottom: 10px;
+  box-shadow: 0 5px 16px rgba(35,65,75,0.07);
 
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* FOTO MAKANAN */
+.menu-card:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(35,65,75,0.1);
+}
+
+/* =====================================
+   7. GAMBAR MENU
+===================================== */
 
 .menu-card img {
   display: block;
-
   width: 100%;
-  height: 110px;
-  min-height: 110px;
+
+  height: 135px;
+  min-height: 135px;
+  flex: 0 0 135px;
 
   object-fit: cover;
+  background: #edf2f3;
 }
 
-/* NAMA MAKANAN */
+/* =====================================
+   8. NAMA DAN HARGA
+===================================== */
 
 .menu-card h3 {
-  display: block;
+  color: #293c43;
 
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.4;
 
-  color: #333;
-
-  margin: 9px 8px 5px;
+  margin: 12px 12px 6px;
 }
-
-/* HARGA */
 
 .menu-card p {
-  display: block;
+  color: var(--orange);
 
-  font-size: 13px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 850;
 
-  color: #e85d04;
-
-  margin: 0 8px 9px;
+  margin: 0 12px 13px;
 }
 
-/* TOMBOL TAMBAH */
+/* =====================================
+   9. TOMBOL TAMBAH MENU
+===================================== */
 
 .menu-card button {
-  display: block;
+  width: calc(100% - 24px);
 
-  width: calc(100% - 16px);
+  margin: auto 12px 0;
+  padding: 12px 6px;
 
-  background: #28a745;
+  background: linear-gradient(135deg, #16ad70, #078b60);
+
   color: white;
-
   border: none;
-  border-radius: 7px;
+  border-radius: 12px;
 
-  padding: 9px;
-  margin: 0 8px;
-
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 800;
 
   cursor: pointer;
+  box-shadow: 0 4px 9px rgba(7,150,105,0.16);
+
+  transition: 0.2s;
 }
 
 .menu-card button:active {
-  background: #218838;
-  transform: scale(0.97);
+  transform: scale(0.96);
+  background: var(--hijau-tua);
 }
 
 /* =====================================
-   6. TOTAL TAGIHAN
+   10. TOTAL TAGIHAN
 ===================================== */
 
 .summary-box {
-  background: #f8f9fa;
+  flex-shrink: 0;
 
-  padding: 10px;
+  background: linear-gradient(145deg, #ffffff, #f5f9fb);
 
-  border-radius: 10px;
-  border: 1px solid #eee;
+  border: 1px solid #e8eef1;
+  border-radius: 23px;
+
+  padding: 17px;
 
   text-align: center;
 
-  margin-bottom: 8px;
-
-  flex-shrink: 0;
+  box-shadow: 0 -5px 18px rgba(35,65,75,0.035);
 }
 
 .summary-box h3 {
-  font-size: 14px;
-  margin-bottom: 6px;
+  color: #46545d;
+
+  font-size: 20px;
+  font-weight: 850;
+
+  margin-bottom: 8px;
 }
 
 .total-teks {
-  font-size: 22px;
+  color: var(--biru);
 
-  color: #007bff;
-  font-weight: bold;
+  font-size: 39px;
+  font-weight: 900;
+  letter-spacing: -1.5px;
 
-  margin: 4px 0 10px;
+  margin: 8px 0 17px;
 }
 
 /* =====================================
-   7. TOMBOL BAYAR DAN RESET
+   11. TOMBOL BAYAR DAN RESET
 ===================================== */
 
 .action-btns {
   display: flex;
-  gap: 8px;
+  gap: 12px;
 }
 
 .btn-main {
   flex: 2;
 
-  padding: 11px;
+  padding: 16px 10px;
 
-  background: #28a745;
+  background: linear-gradient(135deg, #17aa6d, #07875c);
+
   color: white;
-
   border: none;
-  border-radius: 7px;
+  border-radius: 14px;
 
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 850;
+
+  cursor: pointer;
+  box-shadow: 0 5px 12px rgba(7,150,105,0.15);
 }
 
 .btn-main:disabled {
-  background: #ccc;
+  background: #cbd2d6;
+  color: white;
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
 .btn-reset {
   flex: 1;
 
-  padding: 11px;
+  padding: 16px 10px;
 
-  background: #dc3545;
+  background: linear-gradient(135deg, #f04b61, #d92d49);
+
   color: white;
-
   border: none;
-  border-radius: 7px;
+  border-radius: 14px;
 
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.btn-reset:active,
+.btn-main:not(:disabled):active {
+  transform: scale(0.97);
 }
 
 /* =====================================
-   8. AREA QR CODE
+   12. QR CODE
 ===================================== */
 
 #qr-section {
-  border-top: 1px dashed #ccc;
+  flex-shrink: 0;
 
-  padding-top: 8px;
+  border-top: 1px dashed #d8e4e0;
+  padding-top: 12px;
 
   text-align: center;
-  flex-shrink: 0;
 }
 
 .hidden {
@@ -288,60 +436,222 @@ h3 {
 }
 
 #qr-canvas {
-  width: 140px !important;
-  height: 140px !important;
-
-  margin: 5px auto;
-
   display: block;
+
+  width: 150px !important;
+  height: 150px !important;
+
+  margin: 10px auto;
+  padding: 7px;
+
+  background: white;
+  border: 1px solid #e6ecef;
+  border-radius: 12px;
 }
 
 /* =====================================
-   9. STATUS PEMBAYARAN
+   13. STATUS PEMBAYARAN
 ===================================== */
 
 .status-box {
-  padding: 8px;
+  padding: 12px;
+  margin-top: 7px;
 
-  font-size: 12px;
-
-  border-radius: 7px;
-
-  margin-top: 5px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 650;
 }
 
 .status-pending {
-  background: #fff3cd;
-  color: #856404;
+  background: #fff5dc;
+  color: #946400;
 }
 
 .status-success {
-  background: #d4edda;
-  color: #155724;
-  font-weight: bold;
+  background: #e1f8eb;
+  color: #087747;
+  font-weight: 800;
 }
 
 /* =====================================
-   10. RESPONSIVE HP KECIL
+   14. RIWAYAT SALDO
 ===================================== */
 
-@media (max-height: 650px) {
+#riwayat-saldo {
+  width: 100%;
+  overflow-x: auto;
+}
 
-  .container {
-    height: 98dvh;
+.riwayat-item {
+  padding: 12px;
+  margin-bottom: 8px;
+
+  background: #f6faf8;
+  border: 1px solid #e8f1ec;
+  border-radius: 12px;
+}
+
+/* =====================================
+   15. NOTIFIKASI
+===================================== */
+
+.notifikasi {
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* =====================================
+   16. RESPONSIVE HP
+===================================== */
+
+@media (max-width: 450px) {
+  body {
     padding: 8px;
   }
 
-  .menu-card img {
-    height: 85px;
-    min-height: 85px;
+  .container {
+    width: 100%;
+    height: 97dvh;
+
+    padding: 15px;
+    border-radius: 27px;
   }
 
   h1 {
-    margin-bottom: 6px;
+    font-size: 25px;
+    margin-bottom: 18px;
+  }
+
+  .saldo-box {
+    padding: 19px;
+    margin-bottom: 19px;
+    border-radius: 22px;
+  }
+
+  .saldo-header {
+    font-size: 17px;
+  }
+
+  .saldo-footer {
+    font-size: 14px;
+  }
+
+  .saldo-footer strong {
+    font-size: 17px;
+  }
+
+  .container > h3 {
+    font-size: 18px;
+  }
+
+  .menu-grid {
+    gap: 13px;
+  }
+
+  .menu-card {
+    min-height: 245px;
+    border-radius: 16px;
+  }
+
+  .menu-card img {
+    height: 120px;
+    min-height: 120px;
+    flex-basis: 120px;
+  }
+
+  .menu-card h3 {
+    font-size: 14px;
+    margin: 11px 10px 5px;
+  }
+
+  .menu-card p {
+    font-size: 14px;
+    margin: 0 10px 12px;
+  }
+
+  .menu-card button {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    font-size: 13px;
+    padding: 12px 4px;
   }
 
   .summary-box {
-    padding: 7px;
+    padding: 15px;
+    border-radius: 20px;
+  }
+
+  .summary-box h3 {
+    font-size: 19px;
+  }
+
+  .total-teks {
+    font-size: 36px;
+    margin-bottom: 14px;
+  }
+
+  .btn-main,
+  .btn-reset {
+    padding: 15px 8px;
+    font-size: 15px;
+  }
+}
+
+/* =====================================
+   17. HP LAYAR PENDEK
+===================================== */
+
+@media (max-height: 700px) {
+  .container {
+    height: 98dvh;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 9px;
+  }
+
+  .saldo-box {
+    padding: 11px 15px;
+    margin-bottom: 10px;
+  }
+
+  #saldo-kasir,
+  #saldo-penjual {
+    font-size: 27px;
+    margin: 9px 0;
+  }
+
+  .saldo-footer {
+    padding-top: 8px;
+  }
+
+  .container > h3 {
+    margin-bottom: 7px;
+  }
+
+  .menu-card {
+    min-height: 215px;
+  }
+
+  .menu-card img {
+    height: 95px;
+    min-height: 95px;
+    flex-basis: 95px;
+  }
+
+  .summary-box {
+    padding: 9px;
+  }
+
+  .total-teks {
+    font-size: 28px;
+    margin: 5px 0 9px;
+  }
+
+  .btn-main,
+  .btn-reset {
+    padding: 11px;
   }
 }
