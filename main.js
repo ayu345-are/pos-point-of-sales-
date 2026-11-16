@@ -27,7 +27,7 @@ const firebaseConfig = {
 
 
 // ==========================================
-// 2. INISIALISASI
+// 2. INISIALISASI FIREBASE
 // ==========================================
 
 const app = initializeApp(firebaseConfig);
@@ -37,7 +37,9 @@ const saldoRef = doc(db, "pengaturan", "saldoKasir");
 
 let totalHarga = 0;
 let trxIdSekarang = "";
+
 let unsubscribeListener = null;
+
 let suaraDiaktifkan = false;
 let prosesSedangBerjalan = false;
 
@@ -52,35 +54,35 @@ function formatRupiah(angka) {
 
 
 // ==========================================
-// 4. SALDO KASIR REALTIME
+// 4. TAMPILKAN SALDO KASIR
 // ==========================================
 
 onSnapshot(saldoRef, async (snapshot) => {
 
-  if (!snapshot.exists()) {
+  try {
 
-    try {
+    if (!snapshot.exists()) {
+
       await setDoc(saldoRef, {
         saldo: 0,
         totalPemasukan: 0
-      }, { merge: true });
-    } catch (error) {
-      console.error("Gagal membuat saldo:", error);
+      });
+
+      return;
     }
 
-    return;
+    const data = snapshot.data();
+
+    document.getElementById("saldo-kasir").innerText =
+      formatRupiah(data.saldo);
+
+    document.getElementById("total-pemasukan").innerText =
+      formatRupiah(data.totalPemasukan);
+
+  } catch (error) {
+    console.error("Gagal mengambil saldo:", error);
   }
 
-  const data = snapshot.data();
-
-  document.getElementById("saldo-kasir").innerText =
-    formatRupiah(data.saldo);
-
-  document.getElementById("total-pemasukan").innerText =
-    formatRupiah(data.totalPemasukan);
-
-}, (error) => {
-  console.error("Gagal mengambil saldo:", error);
 });
 
 
@@ -128,7 +130,7 @@ function suaraKasir(teks) {
 
 
 // ==========================================
-// 6. ID TRANSAKSI MENJADI SUARA
+// 6. ID TRANSAKSI
 // ==========================================
 
 function ubahIdMenjadiSuara(id) {
@@ -189,8 +191,7 @@ function notifikasiPembayaran(total, idTransaksi) {
 
   document.body.appendChild(notifikasi);
 
-  const nominalSuara =
-    Number(total).toLocaleString("id-ID");
+  const nominalSuara = Number(total).toLocaleString("id-ID");
 
   const idSuara = ubahIdMenjadiSuara(idTransaksi);
 
@@ -210,10 +211,12 @@ function notifikasiPembayaran(total, idTransaksi) {
 
 
 // ==========================================
-// 8. TAMBAH MENU
+// 8. TAMBAH MENU KE KERANJANG
 // ==========================================
 
 window.tambahKeKeranjang = function(nama, harga) {
+
+  if (prosesSedangBerjalan || trxIdSekarang) return;
 
   totalHarga += Number(harga);
 
@@ -230,6 +233,8 @@ window.tambahKeKeranjang = function(nama, harga) {
 
 window.resetKeranjang = function() {
 
+  if (prosesSedangBerjalan) return;
+
   totalHarga = 0;
 
   document.getElementById("total-harga").innerText = "Rp0";
@@ -244,16 +249,17 @@ window.resetKeranjang = function() {
   }
 
   trxIdSekarang = "";
+
 };
 
 
 // ==========================================
-// 10. BUAT TRANSAKSI QR
+// 10. MEMBUAT TRANSAKSI QR
 // ==========================================
 
 window.buatTransaksiQR = async function() {
 
-  if (prosesSedangBerjalan || totalHarga === 0) return;
+  if (prosesSedangBerjalan || totalHarga <= 0 || trxIdSekarang) return;
 
   prosesSedangBerjalan = true;
 
@@ -263,12 +269,6 @@ window.buatTransaksiQR = async function() {
 
   document.getElementById("btn-bayar").disabled = true;
 
-  if (unsubscribeListener) {
-    unsubscribeListener();
-    unsubscribeListener = null;
-  }
-
-  // ID unik untuk setiap transaksi
   trxIdSekarang =
     "TRX-" + Date.now() + "-" +
     Math.floor(Math.random() * 1000);
@@ -283,6 +283,10 @@ window.buatTransaksiQR = async function() {
 
   document.getElementById("status-teks").innerText =
     "Menunggu pembayaran...";
+
+  // TOTAL TAGIHAN TETAP DITAMPILKAN
+  document.getElementById("total-harga").innerText =
+    formatRupiah(totalTransaksi);
 
   const canvas = document.getElementById("qr-canvas");
 
@@ -304,9 +308,7 @@ window.buatTransaksiQR = async function() {
       waktuBuat: Date.now()
     });
 
-    totalHarga = 0;
-
-    document.getElementById("total-harga").innerText = "Rp0";
+    // JANGAN RESET TOTAL HARGA DI SINI
 
     listenStatusPembayaran(trxIdSekarang);
 
@@ -316,12 +318,17 @@ window.buatTransaksiQR = async function() {
 
     alert("Transaksi gagal dibuat. Silakan coba kembali.");
 
+    trxIdSekarang = "";
+
     document.getElementById("btn-bayar").disabled = false;
+
+    document.getElementById("qr-section").classList.add("hidden");
 
   } finally {
 
     prosesSedangBerjalan = false;
   }
+
 };
 
 
@@ -341,10 +348,8 @@ async function prosesSaldoKasir(trxId) {
 
     const dataTrx = trxSnapshot.data();
 
-    // Pastikan status pembayaran lunas
     if (dataTrx.status !== "terbayar") return false;
 
-    // Cegah saldo masuk dua kali
     if (dataTrx.saldoDiproses === true) return false;
 
     const jumlah = Number(dataTrx.total);
@@ -363,27 +368,33 @@ async function prosesSaldoKasir(trxId) {
       ? Number(saldoSnapshot.data().totalPemasukan || 0)
       : 0;
 
-    // Update saldo
     transaction.set(saldoRef, {
+
       saldo: saldoLama + jumlah,
+
       totalPemasukan: pemasukanLama + jumlah,
+
       diperbarui: Date.now()
+
     }, { merge: true });
 
-    // Tandai transaksi sudah masuk
     transaction.update(refTrx, {
+
       saldoDiproses: true,
+
       waktuSaldoMasuk: Date.now()
+
     });
 
     return true;
 
   });
+
 }
 
 
 // ==========================================
-// 12. PANTAU PEMBAYARAN
+// 12. PANTAU STATUS PEMBAYARAN
 // ==========================================
 
 function listenStatusPembayaran(trxId) {
@@ -394,6 +405,7 @@ function listenStatusPembayaran(trxId) {
   let notifikasiSudahDitampilkan = false;
 
   unsubscribeListener = onSnapshot(
+
     refTrx,
 
     async (snapshot) => {
@@ -415,6 +427,7 @@ function listenStatusPembayaran(trxId) {
       if (data.saldoDiproses === true) {
 
         if (!notifikasiSudahDitampilkan) {
+
           notifikasiSudahDitampilkan = true;
 
           notifikasiPembayaran(data.total, trxId);
@@ -456,10 +469,13 @@ function listenStatusPembayaran(trxId) {
 
         sedangMemproses = false;
       }
+
     },
 
     (error) => {
       console.error("Listener pembayaran gagal:", error);
     }
+
   );
+
 }
