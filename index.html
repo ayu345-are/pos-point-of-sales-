@@ -4,10 +4,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Kasir Cemerlang</title>
-
   <link rel="stylesheet" href="style.css">
+  <style>
+    .btn-navigasi {
+      margin-top: 8px;
+      display: inline-block;
+      padding: 7px 16px;
+      background: #2185e8;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  </style>
 </head>
 
 <body>
@@ -18,34 +29,51 @@
   <header class="header">
     <h1>🛒 Kasir Cemerlang</h1>
     <p>Sistem Kasir Digital dan Pembayaran QR</p>
+    <a href="kelola.html" class="btn-navigasi">⚙️ Buka Menu Kelola (CRUD)</a>
   </header>
 
   <!-- SALDO -->
   <div class="saldo-box">
-
     <div class="saldo-header">
       <span>💰 Saldo Kasir</span>
       <span class="saldo-status">● Aktif</span>
     </div>
-
     <h2 id="saldo-kasir">Rp0</h2>
-
     <div class="saldo-footer">
       <span>📈 Total Pemasukan</span>
       <strong id="total-pemasukan">Rp0</strong>
     </div>
+  </div>
 
+  <!-- TOTAL TAGIHAN -->
+  <div class="summary-box">
+    <h3>Total Tagihan</h3>
+    <div id="total-harga" class="total-teks">Rp0</div>
+    <div class="action-btns">
+      <button id="btn-bayar" class="btn-main" disabled onclick="buatTransaksiQR()">Buat QR</button>
+      <button id="btn-reset" class="btn-reset" onclick="resetKeranjang()">Reset</button>
+    </div>
+  </div>
+
+  <!-- QR CODE -->
+  <div id="qr-section" class="hidden">
+    <h3>ID: <span id="tx-id-display"></span></h3>
+    <canvas id="qr-canvas"></canvas>
+    <div id="status-box" class="status-box status-pending">
+      Status: <strong id="status-teks">Menunggu pembayaran...</strong>
+    </div>
   </div>
 
   <!-- JUDUL MENU -->
-  <h3 class="judul-menu">🍽️ Menu Makanan & Minuman</h3>
+  <h3 class="judul-menu" style="margin-top: 15px;">🍽️ Menu Makanan & Minuman</h3>
 
   <!-- AREA SCROLL MENU -->
-  <div class="menu-grid">
+  <div class="menu-grid" id="menu-grid">
 
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500" alt="Ramen">
       <h3>🍜 Ramen</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp15.000</p>
       <button onclick="tambahKeKeranjang('Ramen',15000)">+ Tambah</button>
     </div>
@@ -53,6 +81,7 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500" alt="Es Teh">
       <h3>🧋 Es Teh</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp3.000</p>
       <button onclick="tambahKeKeranjang('Es Teh',3000)">+ Tambah</button>
     </div>
@@ -60,6 +89,7 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=500" alt="Kimbab">
       <h3>🫔 Kimbab</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp10.000</p>
       <button onclick="tambahKeKeranjang('Kimbab',10000)">+ Tambah</button>
     </div>
@@ -67,6 +97,7 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500" alt="Sushi">
       <h3>🍣 Sushi</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp15.000</p>
       <button onclick="tambahKeKeranjang('Sushi',15000)">+ Tambah</button>
     </div>
@@ -74,6 +105,7 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=500" alt="Chicken Katsu">
       <h3>🍗 Chicken Katsu</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp18.000</p>
       <button onclick="tambahKeKeranjang('Chicken Katsu',18000)">+ Tambah</button>
     </div>
@@ -81,6 +113,7 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500" alt="Dimsum">
       <h3>🥟 Dimsum</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp12.000</p>
       <button onclick="tambahKeKeranjang('Dimsum',12000)">+ Tambah</button>
     </div>
@@ -88,6 +121,7 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500" alt="Corndog">
       <h3>🌭 Corndog</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp10.000</p>
       <button onclick="tambahKeKeranjang('Corndog',10000)">+ Tambah</button>
     </div>
@@ -95,6 +129,7 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=500" alt="Matcha">
       <h3>🍵 Matcha</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp8.000</p>
       <button onclick="tambahKeKeranjang('Matcha',8000)">+ Tambah</button>
     </div>
@@ -102,6 +137,7 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500" alt="Chicken Teriyaki">
       <h3>🍱 Chicken Teriyaki</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp18.000</p>
       <button onclick="tambahKeKeranjang('Chicken Teriyaki',18000)">+ Tambah</button>
     </div>
@@ -109,6 +145,7 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1635363638580-c2809d049eee?w=500" alt="Tteokbokki">
       <h3>🌶️ Tteokbokki</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp12.000</p>
       <button onclick="tambahKeKeranjang('Tteokbokki',12000)">+ Tambah</button>
     </div>
@@ -116,6 +153,7 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=500" alt="Ebi Furai">
       <h3>🍤 Ebi Furai</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp15.000</p>
       <button onclick="tambahKeKeranjang('Ebi Furai',15000)">+ Tambah</button>
     </div>
@@ -123,52 +161,9 @@
     <div class="menu-card">
       <img src="https://images.unsplash.com/photo-1546173159-315724a31696?w=500" alt="Mango Yakult">
       <h3>🥭 Mango Yakult</h3>
+      <span style="font-size: 10px; color: #71808a; display: block; text-align: center;">Toko: Umum</span>
       <p>Rp8.000</p>
       <button onclick="tambahKeKeranjang('Mango Yakult',8000)">+ Tambah</button>
-    </div>
-
-  </div>
-
-  <!-- TOTAL TAGIHAN -->
-  <div class="summary-box">
-
-    <h3>Total Tagihan</h3>
-
-    <div id="total-harga" class="total-teks">
-      Rp0
-    </div>
-
-    <div class="action-btns">
-
-      <button
-        id="btn-bayar"
-        class="btn-main"
-        disabled
-        onclick="buatTransaksiQR()">
-        Buat QR
-      </button>
-
-      <button
-        id="btn-reset"
-        class="btn-reset"
-        onclick="resetKeranjang()">
-        Reset
-      </button>
-
-    </div>
-
-  </div>
-
-  <!-- QR CODE -->
-  <div id="qr-section" class="hidden">
-
-    <h3>ID: <span id="tx-id-display"></span></h3>
-
-    <canvas id="qr-canvas"></canvas>
-
-    <div id="status-box" class="status-box status-pending">
-      Status:
-      <strong id="status-teks">Menunggu pembayaran...</strong>
     </div>
 
   </div>

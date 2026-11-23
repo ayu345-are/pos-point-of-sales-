@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Menu - Kasir Cemerlang</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .container-kelola {
+      width: 100%;
+      max-width: 650px;
+      min-height: 100%;
+      margin: 0 auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 10px 35px rgba(31,65,75,0.09);
+    }
+
+    .btn-kembali {
+      display: inline-block;
+      margin-bottom: 15px;
+      padding: 7px 14px;
+      background: #71808a;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .crud-form input[type="text"],
+    .crud-form input[type="number"],
+    .crud-form input[type="file"],
+    .crud-form select {
+      width: 100%;
+      padding: 11px;
+      margin-bottom: 10px;
+      border: 1px solid #d5dfe4;
+      border-radius: 10px;
+      font-size: 13px;
+      background: #fff;
+    }
+
+    .preview-container {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px dashed #b9d8cd;
+      border-radius: 12px;
+      background: #f8fcfb;
+      text-align: center;
+    }
+
+    .preview-container.hidden {
+      display: none;
+    }
+
+    .preview-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #079669;
+      margin-bottom: 6px;
+    }
+
+    .crud-preview {
+      width: 100%;
+      max-height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #e0e6e9;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .crud-form button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background: #079669;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .crud-list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      gap: 8px;
+    }
+
+    .crud-item-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .crud-item-info img {
+      width: 55px;
+      height: 55px;
+      min-width: 55px;
+      min-height: 55px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #f0f0f0;
+      border: 1px solid #e2e8f0;
+    }
+
+    .crud-item-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .crud-item-text strong {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .crud-item-actions {
+      display: flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .crud-item-actions button {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .bagian-penjual {
+      padding: 15px;
+      background: #f4faf7;
+      border: 1px solid #dcefe5;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .bagian-penjual input {
+      width: 100%;
+      padding: 11px;
+      margin: 8px 0;
+      border: 1px solid #d5dfe4;
+      border-radius: 10px;
+    }
+
+    .bagian-penjual button {
+      width: 100%;
+      padding: 11px;
+      background: #2185e8;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 800;
+    }
+
+    .penjual-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      background: white;
+      border-radius: 10px;
+      margin-top: 8px;
+      border: 1px solid #e5ece8;
+      font-size: 12px;
+    }
+
+    .penjual-item button {
+      width: auto;
+      padding: 6px 10px;
+      background: #e94359;
+      font-size: 11px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container-kelola">
+
+  <a href="index.html" class="btn-kembali">⬅️ Kembali ke Kasir</a>
+
+  <h2 style="margin-bottom:15px;color:#183b38;">
+    🛠️ Kelola Menu (CRUD & Penjual)
+  </h2>
+
+  <!-- IDENTITAS PENJUAL -->
+  <div class="bagian-penjual">
+
+    <h3>👤 Identitas Penjual</h3>
+
+    <p style="font-size:12px;color:#71808a;margin-top:5px;">
+      Daftarkan penjual agar setiap menu memiliki identitas pemilik.
+    </p>
+
+    <form id="form-penjual">
+      <input
+        type="text"
+        id="penjual-id-baru"
+        placeholder="ID Penjual (Contoh: P001)"
+        required
+      >
+
+      <input
+        type="text"
+        id="penjual-nama-baru"
+        placeholder="Nama Penjual"
+        required
+      >
+
+      <button type="submit">+ Daftarkan Penjual</button>
+    </form>
+
+    <h4 style="margin-top:18px;">Daftar Penjual</h4>
+
+    <div id="daftar-penjual">
+      <p style="font-size:12px;color:#888;">Memuat data penjual...</p>
+    </div>
+
+  </div>
+
+  <!-- FORM CRUD MENU -->
+  <h3 style="margin-bottom:12px;">🍽️ Tambah / Edit Menu</h3>
+
+  <form id="form-crud-menu" class="crud-form">
+
+    <input type="hidden" id="crud-menu-id">
+    <input type="hidden" id="crud-gambar-lama">
+
+    <select id="crud-penjual-id" required>
+      <option value="">Pilih Identitas Penjual</option>
+    </select>
+
+    <input
+      type="text"
+      id="crud-nama"
+      placeholder="Nama Menu (contoh: 🍔 Burger)"
+      required
+    >
+
+    <input
+      type="number"
+      id="crud-harga"
+      placeholder="Harga (contoh: 15000)"
+      min="1"
+      required
+    >
+
+    <input
+      type="file"
+      id="crud-gambar-file"
+      accept="image/*"
+    >
+
+    <div id="preview-container" class="preview-container hidden">
+      <span class="preview-label">🖼️ Pratinjau Gambar Menu:</span>
+      <img id="crud-preview" class="crud-preview" alt="Pratinjau Gambar">
+    </div>
+
+    <button type="submit" id="btn-simpan-crud">
+      Simpan Menu ke Database
+    </button>
+
+  </form>
+
+  <h4 style="margin-top:25px;margin-bottom:10px;">
+    Daftar Menu Tersimpan (Database)
+  </h4>
+
+  <div id="daftar-crud-menu"></div>
+
+</div>
+
+<script type="module" src="main.js"></script>
+
+</body>
+</html>
